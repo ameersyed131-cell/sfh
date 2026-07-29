@@ -1,1169 +1,521 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syed Faiz Hussain — Full-Stack Web Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FaizCodex — Full-stack Developer · Hyderabad</title>
+<meta name="description" content="Syed Faiz Hussain — full-stack developer crafting high-performance web experiences for startups and growing businesses. Hyderabad, India." />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #0e1c2e;
-    --navy-mid: #152538;
-    --navy-light: #1e3550;
-    --teal: #1a9e80;
-    --teal-light: #23c49e;
-    --teal-pale: #e1f5ef;
-    --gold: #d4a44c;
-    --gold-light: #f0c36d;
-    --cream: #faf8f4;
-    --text-main: #0e1c2e;
-    --text-muted: #5a7085;
-    --text-light: #8fa5b8;
-    --border: rgba(14,28,46,0.1);
-    --white: #ffffff;
-    --radius: 12px;
-    --radius-sm: 6px;
+  :root{
+    --bg:#0A0A0B; --surface:#131417; --surface-2:#16181C; --border:#26282C; --border-soft:#303238;
+    --heading:#E6E6E6; --body:#9A9DA3; --muted:#72757B; --dim:#62656A; --accent:#5B7FA6; --accent-soft:#8DA9C5;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,Monaco,monospace;
+    --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--bg)}
+  body{background:var(--bg);color:var(--heading);font-family:var(--sans);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--accent);color:var(--bg)}
+  :focus-visible{outline:2px dashed var(--accent);outline-offset:3px}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:1152px;margin:0 auto;padding:0 16px}
+  @media(min-width:768px){.wrap{padding:0 32px}}
+  .eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent)}
+  .sec{padding:96px 0;scroll-margin-top:80px}
+  .sec-head{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:64px}
+  @media(min-width:768px){.sec-head{grid-template-columns:4fr 8fr}}
+  .sec-head h2{font-size:30px;font-weight:500;letter-spacing:-.02em;color:var(--heading)}
+  @media(min-width:768px){.sec-head h2{font-size:40px}}
 
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text-main);
-    line-height: 1.65;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-  }
+  /* LOADER */
+  #loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity .4s ease}
+  #loader.hide{opacity:0;pointer-events:none}
+  #loader .box{width:100%;max-width:448px;padding:0 24px;font-family:var(--mono);font-size:12px}
+  #loader p{color:var(--accent-soft);line-height:1.8}
+  #loader .cur{margin-top:8px;color:var(--accent)}
+  #loader .cur span{animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
 
   /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(250,248,244,0.92);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2.5rem;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .nav-logo {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: var(--navy);
-    text-decoration: none;
-    letter-spacing: -0.02em;
-  }
-
-  .nav-logo span {
-    color: var(--teal);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: var(--text-muted);
-    letter-spacing: 0.01em;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--teal); }
-
-  .nav-cta {
-    background: var(--navy);
-    color: var(--white) !important;
-    padding: 0.5rem 1.25rem;
-    border-radius: 100px;
-    font-weight: 500 !important;
-    transition: background 0.2s !important;
-  }
-
-  .nav-cta:hover { background: var(--teal) !important; color: var(--white) !important; }
+  header.nav{position:fixed;inset:0 0 auto 0;z-index:50;border-bottom:1px solid var(--border);background:rgba(10,10,11,.95);backdrop-filter:blur(6px)}
+  .nav-inner{display:flex;height:64px;align-items:center;justify-content:between;gap:16px}
+  .brand{font-family:var(--mono);font-size:14px;color:var(--heading);margin-right:auto}
+  .nav-links{display:none;align-items:center;gap:20px}
+  @media(min-width:1280px){.nav-links{display:flex}}
+  .nav-links a{font-size:14px;color:var(--body);transition:color .2s}
+  .nav-links a:hover{color:var(--heading)}
+  .nav-links a .n{margin-right:6px;font-family:var(--mono);font-size:11px;color:var(--accent)}
+  .status-pill{display:none;align-items:center;gap:8px;border:1px solid #33475e;padding:6px 12px;font-family:var(--mono);font-size:11px;color:var(--accent-soft)}
+  @media(min-width:1280px){.status-pill{display:flex}}
+  .status-pill .dot{width:6px;height:6px;background:var(--accent)}
+  .menu-btn{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--heading);background:none;border:none;cursor:pointer}
+  @media(min-width:1280px){.menu-btn{display:none}}
+  .mobile-menu{display:none;border-top:1px solid var(--border);padding:0 16px}
+  .mobile-menu.open{display:block}
+  .mobile-menu a{display:block;border-bottom:1px solid #1D1F22;padding:12px 0;font-size:14px;color:var(--body)}
+  .mobile-menu a .n{margin-right:12px;font-family:var(--mono);font-size:11px;color:var(--accent)}
 
   /* HERO */
-  .hero {
-    padding: 10rem 2.5rem 7rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
+  .hero{min-height:100vh;display:grid;gap:64px;align-items:center;padding:128px 0 80px}
+  @media(min-width:768px){.hero{grid-template-columns:8fr 4fr;gap:64px}}
+  .hero h1{font-size:48px;font-weight:600;line-height:1.05;letter-spacing:-.04em;color:var(--heading);max-width:900px}
+  @media(min-width:640px){.hero h1{font-size:60px}}
+  @media(min-width:1024px){.hero h1{font-size:72px}}
+  .cursor{display:inline-block;width:3px;height:.85em;background:var(--accent);margin-left:4px;vertical-align:baseline;animation:blink 1s steps(1) infinite}
+  .hero p.sub{margin-top:32px;max-width:640px;font-size:18px;color:var(--body);line-height:1.75}
+  .cta-row{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;font-size:14px;font-weight:500;transition:all .2s;cursor:pointer;border:none}
+  .btn-primary{background:var(--accent);color:var(--bg)}
+  .btn-primary:hover{background:#6D91B8}
+  .btn-outline{background:transparent;color:var(--heading);border:1px solid #3A3D42}
+  .btn-outline:hover{border-color:var(--accent)}
+  .stat-row{margin-top:64px;display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
+  @media(min-width:640px){.stat-row{grid-template-columns:1fr 1fr 1fr}}
+  .stat-row .cell{background:var(--bg);padding:16px;font-family:var(--mono);font-size:12px}
+  .stat-row .cell strong{display:block;font-size:18px;color:var(--heading);font-weight:500}
+  .stat-row .cell span{color:var(--muted)}
+  .hero-side{border:1px solid var(--border);background:var(--surface)}
+  .hero-side .row{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border)}
+  .hero-side .row:last-child{border-bottom:0}
+  .hero-side .row .l{font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .hero-side .row .v{font-family:var(--mono);font-size:12px;color:var(--accent-soft)}
 
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--teal-pale);
-    color: var(--teal);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.4rem 0.9rem;
-    border-radius: 100px;
-    margin-bottom: 1.5rem;
-    border: 1px solid rgba(26,158,128,0.2);
-  }
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(20px);transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
 
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--teal);
-  }
+  /* WORK */
+  .proj{display:grid;gap:20px;border-top:1px solid var(--border);padding:28px 0;transition:border-color .2s}
+  .proj:hover{border-color:var(--accent)}
+  @media(min-width:768px){.proj{grid-template-columns:1fr 3fr 5fr 3fr;gap:32px}}
+  .proj .idx{font-family:var(--mono);font-size:12px;color:var(--accent)}
+  .proj .cat{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);margin-bottom:8px}
+  .proj h3{font-size:20px;font-weight:500;color:var(--heading)}
+  .proj .desc{line-height:1.75;color:var(--body)}
+  .chips{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--border-soft);padding:4px 8px;font-family:var(--mono);font-size:10px;color:#85888E}
+  .proj .link{display:flex;align-items:flex-start;justify-content:flex-end;gap:16px}
+  .proj .live{font-family:var(--mono);font-size:12px;color:var(--heading);display:inline-flex;align-items:center;gap:8px}
+  .proj .live:hover{color:var(--accent-soft)}
+  .proj .private{font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .load-more{margin-top:32px;border:1px solid #3A3D42;padding:12px 20px;font-family:var(--mono);font-size:12px;color:var(--heading);background:none;cursor:pointer}
+  .load-more:hover{border-color:var(--accent)}
+  .hidden-proj{display:none}
 
-  .hero h1 {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(2.4rem, 4vw, 3.6rem);
-    font-weight: 300;
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-    color: var(--navy);
-    margin-bottom: 1.5rem;
-  }
+  /* EXPERTISE / TECH STACK */
+  .bento{display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
+  @media(min-width:768px){.bento{grid-template-columns:1fr 1fr}}
+  .bento .card{background:var(--surface);padding:32px;transition:background .2s}
+  .bento .card:hover{background:#15171A}
+  .card-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--accent)}
+  .card-focus{margin-top:12px;font-size:24px;color:var(--heading)}
+  .card-tools{margin-top:40px;display:flex;flex-wrap:wrap;gap:8px}
+  .card-tools span{border:1px solid #303238;padding:6px 12px;font-family:var(--mono);font-size:11px;color:var(--body)}
 
-  .hero h1 em {
-    font-style: italic;
-    color: var(--teal);
-  }
+  /* TECH STACK proficiency */
+  .prof{display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
+  @media(min-width:768px){.prof{grid-template-columns:1fr 1fr}}
+  .prof .card{background:var(--surface);padding:32px}
+  .prof .grp-label{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:24px}
+  .bar-row{margin-bottom:20px}
+  .bar-row .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-bottom:6px}
+  .bar-row .lbl .n{color:var(--heading)}
+  .bar-row .lbl .p{color:var(--muted)}
+  .bar-track{height:4px;background:#1D1F22}
+  .bar-fill{height:4px;background:var(--accent)}
 
-  .hero-sub {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    line-height: 1.75;
-    margin-bottom: 2.5rem;
-    max-width: 480px;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    background: var(--navy);
-    color: var(--white);
-    padding: 0.75rem 1.75rem;
-    border-radius: 100px;
-    font-weight: 500;
-    font-size: 0.9rem;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--navy);
-    padding: 0.75rem 1.75rem;
-    border-radius: 100px;
-    font-weight: 500;
-    font-size: 0.9rem;
-    text-decoration: none;
-    border: 1.5px solid rgba(14,28,46,0.25);
-    transition: border-color 0.2s, color 0.2s, transform 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-1px); }
-
-  .hero-visual {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .stat-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .stat-icon {
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    background: var(--teal-pale);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .stat-icon svg { width: 20px; height: 20px; stroke: var(--teal); fill: none; }
-
-  .stat-num {
-    font-family: 'Fraunces', serif;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--navy);
-    letter-spacing: -0.03em;
-  }
-
-  .stat-label { font-size: 0.8rem; color: var(--text-muted); }
-
-  .hero-gold-card {
-    background: var(--navy);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    color: var(--white);
-  }
-
-  .hero-gold-card .label {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.6rem;
-  }
-
-  .stack-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.75rem;
-  }
-
-  .stack-tag {
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.8);
-    font-size: 0.72rem;
-    padding: 0.3rem 0.7rem;
-    border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-
-  /* SECTION BASE */
-  section { padding: 6rem 2.5rem; }
-  .container { max-width: 1100px; margin: 0 auto; }
-
-  .section-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--teal);
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-  }
-
-  .section-title {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    font-weight: 300;
-    letter-spacing: -0.025em;
-    color: var(--navy);
-    line-height: 1.15;
-    margin-bottom: 1rem;
-  }
-
-  .section-sub {
-    font-size: 1rem;
-    color: var(--text-muted);
-    max-width: 520px;
-    line-height: 1.75;
-  }
-
-  /* WORKS */
-  #works { background: var(--white); }
-
-  .works-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .project-card {
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: transform 0.25s, box-shadow 0.25s;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
-  .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(14,28,46,0.1);
-  }
-
-  .project-thumb {
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Fraunces', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .project-body { padding: 1.25rem 1.5rem 1.5rem; }
-
-  .project-tag {
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
-
-  .project-name {
-    font-family: 'Fraunces', serif;
-    font-size: 1.15rem;
-    font-weight: 400;
-    color: var(--navy);
-    line-height: 1.3;
-    margin-bottom: 0.5rem;
-  }
-
-  .project-desc {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-    margin-bottom: 1rem;
-  }
-
-  .project-link {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--teal);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    text-decoration: none;
-  }
-
-  .project-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; transition: transform 0.2s; }
-  .project-card:hover .project-link svg { transform: translate(2px, -2px); }
-
-  /* SKILLS */
-  #skills { background: var(--navy); color: var(--white); }
-  #skills .section-title { color: var(--white); }
-  #skills .section-sub { color: rgba(255,255,255,0.6); }
-  #skills .section-label { color: var(--gold); }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
-    margin-top: 3rem;
-  }
-
-  .skill-group {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-  }
-
-  .skill-group-title {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--teal-light);
-    margin-bottom: 1rem;
-    font-weight: 500;
-  }
-
-  .skill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .skill-pill {
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.82);
-    font-size: 0.78rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 100px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
+  /* TESTIMONIALS */
+  .testi{display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
+  @media(min-width:768px){.testi{grid-template-columns:1fr 1fr}}
+  .testi .card{background:var(--surface);padding:32px}
+  .testi .q{font-size:18px;line-height:2;color:#C8C9CB}
+  .testi .who{margin-top:24px;font-family:var(--mono);font-size:12px}
+  .testi .who .n{color:var(--heading)}
+  .testi .who .r{color:var(--muted)}
 
   /* ABOUT */
-  #about {
-    background: var(--cream);
-  }
+  .about-grid{display:grid;gap:48px}
+  @media(min-width:768px){.about-grid{grid-template-columns:4fr 8fr}}
+  .about-grid p.bio{max-width:720px;font-size:20px;line-height:2.25;color:#C8C9CB}
+  .pull{margin:64px 0;border-left:2px solid var(--accent);padding-left:24px;font-size:32px;font-weight:500;line-height:1.3;letter-spacing:-.02em;color:var(--heading)}
+  @media(min-width:768px){.pull{font-size:40px}}
+  .values{display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
+  @media(min-width:640px){.values{grid-template-columns:1fr 1fr}}
+  .values .v{background:var(--bg);padding:20px}
+  .values .v .n{font-family:var(--mono);font-size:10px;color:var(--accent)}
+  .values .v p{margin-top:12px;font-size:14px;color:#B8B9BC}
 
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: start;
-  }
+  /* CREDENTIALS */
+  .cred{border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .cred .row{display:grid;gap:12px;border-bottom:1px solid var(--border);padding:20px 0;align-items:center}
+  .cred .row:last-child{border-bottom:0}
+  @media(min-width:768px){.cred .row{grid-template-columns:3fr 3fr 4fr 2fr}}
+  .cred .issuer{font-family:var(--mono);font-size:11px;color:var(--accent)}
+  .cred h3{font-size:14px;font-weight:500;color:var(--heading)}
+  .cred .d{font-size:14px;color:#85888E}
+  .cred .meta{display:flex;align-items:center;justify-content:flex-end;gap:12px}
+  .cred .date{font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .cred .view{font-family:var(--mono);font-size:10px;color:var(--accent-soft);background:none;border:none;cursor:pointer}
+  .cred .view:hover{color:var(--heading)}
+  .cred-note{margin-top:32px;font-family:var(--mono);font-size:12px;color:var(--muted)}
 
-  .about-text p {
-    color: var(--text-muted);
-    line-height: 1.8;
-    margin-bottom: 1.25rem;
-    font-size: 1rem;
-  }
+  /* MODAL */
+  #modal{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:rgba(0,0,0,.8);padding:16px}
+  #modal.open{display:grid}
+  #modal img{max-height:85vh;width:100%;max-width:768px;border:1px solid var(--border);object-fit:contain}
+  #modal .close{position:absolute;right:24px;top:24px;color:var(--heading);background:none;border:none;cursor:pointer;font-size:20px}
 
-  .about-highlight {
-    background: var(--navy);
-    border-radius: var(--radius);
-    padding: 2rem;
-    margin-top: 2rem;
-  }
-
-  .about-highlight p {
-    color: rgba(255,255,255,0.75);
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin: 0;
-  }
-
-  .about-highlight .attr {
-    font-family: 'DM Sans', sans-serif;
-    font-style: normal;
-    font-size: 0.8rem;
-    color: var(--gold);
-    margin-top: 0.75rem;
-    display: block;
-    letter-spacing: 0.05em;
-  }
-
-  .values-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .values-list li {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-
-  .value-icon {
-    width: 36px; height: 36px;
-    background: var(--teal-pale);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .value-icon svg { width: 16px; height: 16px; stroke: var(--teal); fill: none; }
-
-  .value-title {
-    font-weight: 500;
-    color: var(--navy);
-    font-size: 0.9rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .value-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  /* FAQ */
+  .faq{border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .faq .item{border-bottom:1px solid var(--border)}
+  .faq .q{display:flex;width:100%;align-items:flex-start;justify-content:space-between;gap:24px;padding:24px 0;background:none;border:none;cursor:pointer;text-align:left}
+  .faq .q .qn{font-family:var(--mono);font-size:12px;color:var(--accent)}
+  .faq .q .qt{font-size:18px;color:var(--heading)}
+  .faq .q .ic{margin-top:4px;color:var(--muted);font-size:16px;flex-shrink:0}
+  .faq .item.open .ic{color:var(--accent)}
+  .faq .a{display:none;max-width:720px;padding-bottom:24px;padding-left:40px;line-height:1.75;color:var(--body)}
+  .faq .item.open .a{display:block}
 
   /* CONTACT */
-  #contact { background: var(--white); }
-
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: start;
-  }
-
-  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-
-  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-
-  label {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--text-main);
-  }
-
-  input, textarea {
-    padding: 0.75rem 1rem;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    background: var(--cream);
-    color: var(--text-main);
-    transition: border-color 0.2s;
-    outline: none;
-    resize: vertical;
-  }
-
-  input:focus, textarea:focus { border-color: var(--teal); }
-
-  .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
-
-  .contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .contact-item-icon {
-    width: 40px; height: 40px;
-    background: var(--navy);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .contact-item-icon svg { width: 18px; height: 18px; stroke: var(--white); fill: none; }
-
-  .contact-item-label { font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.2rem; }
-  .contact-item-value { font-size: 0.9rem; color: var(--navy); font-weight: 500; }
-  .contact-item-value a { color: var(--navy); text-decoration: none; }
-  .contact-item-value a:hover { color: var(--teal); }
+  .contact-grid{display:grid;gap:64px}
+  @media(min-width:768px){.contact-grid{grid-template-columns:5fr 7fr}}
+  .contact-info{margin-top:48px;display:flex;flex-direction:column;gap:12px;font-family:var(--mono);font-size:12px}
+  .contact-info a{color:var(--body)}
+  .contact-info a:hover{color:var(--heading)}
+  .contact-info p.muted{color:var(--muted)}
+  .form{border:1px solid var(--border);background:var(--surface);padding:24px}
+  @media(min-width:768px){.form{padding:32px}}
+  .field{display:block;margin-bottom:24px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .field input,.field textarea{display:block;margin-top:8px;width:100%;border:1px solid var(--border-soft);background:#0D0F12;padding:12px 16px;font-family:var(--sans);font-size:14px;color:var(--heading);resize:none}
+  .field textarea{min-height:120px}
+  .form-msg{margin-top:16px;font-size:14px;color:var(--accent-soft);display:none}
+  .form-err{margin-top:16px;font-size:14px;color:#fca5a5;display:none}
 
   /* FOOTER */
-  footer {
-    background: var(--navy);
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    padding: 2.5rem;
-    font-size: 0.82rem;
-  }
-
-  footer a { color: var(--teal-light); text-decoration: none; }
-
-  /* DIVIDER */
-  .divider {
-    width: 48px;
-    height: 2px;
-    background: var(--teal);
-    border-radius: 2px;
-    margin: 1.5rem 0;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-content > * {
-    animation: fadeUp 0.6s ease forwards;
-    opacity: 0;
-  }
-
-  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
-  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
-  .hero-content > *:nth-child(3) { animation-delay: 0.32s; }
-  .hero-content > *:nth-child(4) { animation-delay: 0.44s; }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    nav { padding: 0 1.25rem; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; padding: 8rem 1.25rem 4rem; gap: 3rem; }
-    .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
-    section { padding: 4rem 1.25rem; }
-  }
+  footer{border-top:1px solid var(--border);padding:32px 0}
+  .foot-inner{display:flex;flex-direction:column;gap:16px;font-family:var(--mono);font-size:10px;color:var(--dim)}
+  @media(min-width:768px){.foot-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+  footer a.up{color:#8A8D92}
+  footer a.up:hover{color:var(--heading)}
 </style>
 </head>
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="box" id="loaderBox"></div>
+</div>
+
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">Faiz<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="#works">Works</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#certifications">Certifications</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact" class="nav-cta">Let's talk</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section style="padding: 0;">
-  <div class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">Available for new projects</div>
-      <h1>Building <em>digital products</em> that mean business</h1>
-      <p class="hero-sub">I'm Syed Faiz Hussain — a full-stack developer based in Hyderabad, crafting high-performance web experiences for startups and growing businesses across industries.</p>
-      <div class="hero-actions">
-        <a href="#works" class="btn-primary">
-          View my work
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#contact" class="btn-outline">Get in touch</a>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          </div>
-          <div>
-            <div class="stat-num">20+</div>
-            <div class="stat-label">Live products</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          </div>
-          <div>
-            <div class="stat-num">5+</div>
-            <div class="stat-label">Years building</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-gold-card">
-        <div class="label">Core stack</div>
-        <div style="color: #fff; font-size: 0.95rem; font-weight: 500;">Next.js · React · TypeScript</div>
-        <div class="stack-tags">
-          <span class="stack-tag">Node.js</span>
-          <span class="stack-tag">PostgreSQL</span>
-          <span class="stack-tag">Prisma</span>
-          <span class="stack-tag">Tailwind</span>
-          <span class="stack-tag">Vercel</span>
-          <span class="stack-tag">Supabase</span>
-          <span class="stack-tag">Stripe</span>
-          <span class="stack-tag">REST APIs</span>
-        </div>
-      </div>
-    </div>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand">&lt;Faiz /&gt;</a>
+    <nav class="nav-links">
+      <a href="#work"><span class="n">01</span>Work</a>
+      <a href="#skills"><span class="n">02</span>Skills</a>
+      <a href="#tech"><span class="n">03</span>Tech Stack</a>
+      <a href="#testimonials"><span class="n">04</span>Testimonials</a>
+      <a href="#credentials"><span class="n">05</span>Credentials</a>
+      <a href="#about"><span class="n">06</span>About</a>
+      <a href="#faq"><span class="n">07</span>FAQ</a>
+      <a href="#contact"><span class="n">08</span>Contact</a>
+    </nav>
+    <div class="status-pill"><span class="dot"></span>Available for new projects</div>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">MENU</button>
   </div>
-</section>
-
-<!-- WORKS -->
-<section id="works">
-  <div class="container">
-    <div class="works-header">
-      <div>
-        <div class="section-label">Selected works</div>
-        <h2 class="section-title">Products I've shipped</h2>
-        <p class="section-sub">Real-world applications built for clients across food & beverage, healthcare, agriculture, and transportation.</p>
-      </div>
-    </div>
-
-    <div class="projects-grid">
-
-      <!-- Farmaish Brand Site -->
-      <a class="project-card" href="https://farmaish.vercel.app/" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 2rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">Farmaish</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Brand & Marketing Site</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: var(--gold);">Food & Beverage · Hyderabad</div>
-          <h3 class="project-name">Farmaish — Real Dum Biryani</h3>
-          <p class="project-desc">Brand and marketing website for Hyderabad's premium Dum Biryani restaurant. Rich storytelling, menu showcase, and location pages.</p>
-          <span class="project-link">farmaish.vercel.app <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
-        </div>
-      </a>
-
-      <!-- Farmaish Order -->
-      <a class="project-card" href="https://order-farmaish.vercel.app/" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #16213e 0%, #e63946 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 2rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">Farmaish Order</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Online Ordering Platform</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: #e63946;">Food Tech · E-commerce</div>
-          <h3 class="project-name">Farmaish — Online Ordering</h3>
-          <p class="project-desc">Full online ordering system with cart, customisations, delivery zones, and payment integration for the Farmaish restaurant.</p>
-          <span class="project-link">order-farmaish.vercel.app <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
-        </div>
-      </a>
-
-      <!-- Farmaish POS -->
-      <a class="project-card" href="https://farmaish-pos.vercel.app/" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #1b2838 0%, #2d6a4f 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 2rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">Farmaish POS</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Point of Sale System</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: #2d6a4f;">SaaS · Restaurant Tech</div>
-          <h3 class="project-name">Farmaish POS</h3>
-          <p class="project-desc">Custom Point-of-Sale system for restaurant operations — order management, billing, kitchen display, and real-time analytics.</p>
-          <span class="project-link">farmaish-pos.vercel.app <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
-        </div>
-      </a>
-
-      <!-- AGN Foundation -->
-      <a class="project-card" href="https://www.agnfoundation.in" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #0e4d3a 0%, #1a7a5e 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 2rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">AGN Foundation</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 0.5rem;">Non-Profit</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: var(--teal);">Non-Profit · Web</div>
-          <h3 class="project-name">AGN Foundation</h3>
-          <p class="project-desc">A clean, credibility-first website for a charitable foundation, designed to build trust and drive donor engagement.</p>
-          <span class="project-link">
-            agnfoundation.in
-            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </span>
-        </div>
-      </a>
-
-      <!-- Coorg Coffee -->
-      <a class="project-card" href="https://www.coorgcoffeebean.farm" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #3b2005 0%, #7a4a1a 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 1.7rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">Coorg Coffee Bean</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Agriculture · E-commerce</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: var(--gold);">Agriculture · E-commerce</div>
-          <h3 class="project-name">Coorg Coffee Bean Farm</h3>
-          <p class="project-desc">Direct-to-consumer farm website for a specialty coffee estate in Coorg, featuring product showcase and ordering capabilities.</p>
-          <span class="project-link">
-            coorgcoffeebean.farm
-            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </span>
-        </div>
-      </a>
-
-      <!-- Real Cabs -->
-      <a class="project-card" href="https://realcabs.vercel.app/" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #0e1c2e 0%, #1e3550 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 2rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">Real Cabs</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Australia · Premium Transport</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: var(--text-light);">Transport · Australia</div>
-          <h3 class="project-name">Real Cabs — Premium Chauffeur Service</h3>
-          <p class="project-desc">Booking and brand website for a premium cab & chauffeur service operating across Australia. Polished, conversion-focused design.</p>
-          <span class="project-link">
-            realcabs.vercel.app
-            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </span>
-        </div>
-      </a>
-
-      <!-- Dr Kouser -->
-      <a class="project-card" href="https://drkouser.vercel.app/" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #1a3a6e 0%, #2a5fb0 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 1.7rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">Dr. Kouser Fatima</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Healthcare · Medical</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: #2a5fb0;">Healthcare · Medical</div>
-          <h3 class="project-name">Dr. Kouser Fatima — Gynecologist</h3>
-          <p class="project-desc">Professional practice website for a gynecologist and BUMS MD, focused on patient trust, appointment booking, and medical credentials.</p>
-          <span class="project-link">
-            drkouser.vercel.app
-            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </span>
-        </div>
-      </a>
-
-      <!-- SteelCraft -->
-      <a class="project-card" href="https://steelcrafthyd.vercel.app/" target="_blank" rel="noopener">
-        <div class="project-thumb" style="background: linear-gradient(135deg, #222831 0%, #393e46 100%);">
-          <div style="text-align: center; color: rgba(255,255,255,0.9);">
-            <div style="font-size: 1.8rem; letter-spacing: -0.02em; font-family: 'Fraunces', serif;">SteelCraft</div>
-            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.5rem;">Industrial · B2B</div>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="project-tag" style="color: var(--text-muted);">Industrial · B2B · Hyderabad</div>
-          <h3 class="project-name">SteelCraft Industries</h3>
-          <p class="project-desc">Corporate website for a commercial kitchen equipment manufacturer in Hyderabad, featuring product catalogue and B2B inquiry flows.</p>
-          <span class="project-link">
-            steelcrafthyd.vercel.app
-            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-          </span>
-        </div>
-      </a>
-
-    </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#work"><span class="n">01</span>Work</a>
+    <a href="#skills"><span class="n">02</span>Skills</a>
+    <a href="#tech"><span class="n">03</span>Tech Stack</a>
+    <a href="#testimonials"><span class="n">04</span>Testimonials</a>
+    <a href="#credentials"><span class="n">05</span>Credentials</a>
+    <a href="#about"><span class="n">06</span>About</a>
+    <a href="#faq"><span class="n">07</span>FAQ</a>
+    <a href="#contact"><span class="n">08</span>Contact</a>
   </div>
-</section>
+</header>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="container">
-    <div class="section-label">What I bring</div>
-    <h2 class="section-title">Technical expertise</h2>
-    <p class="section-sub" style="color: rgba(255,255,255,0.55);">A well-rounded stack covering the full product lifecycle — from idea to production.</p>
-
-    <div class="skills-grid">
-      <div class="skill-group">
-        <div class="skill-group-title">Frontend</div>
-        <div class="skill-list">
-          <span class="skill-pill">Next.js</span>
-          <span class="skill-pill">React</span>
-          <span class="skill-pill">TypeScript</span>
-          <span class="skill-pill">Tailwind CSS</span>
-          <span class="skill-pill">Framer Motion</span>
-          <span class="skill-pill">HTML5 / CSS3</span>
-        </div>
+<main id="top">
+  <!-- HERO -->
+  <section class="hero wrap reveal">
+    <div>
+      <p class="eyebrow" style="margin-bottom:32px">Full-stack developer · Hyderabad, India</p>
+      <h1>Building digital products that mean business<span class="cursor"></span></h1>
+      <p class="sub">Full-stack developer crafting fast, durable web experiences for startups and growing businesses across industries.</p>
+      <div class="cta-row">
+        <a href="#work" class="btn btn-primary">View my work ↓</a>
+        <a href="#contact" class="btn btn-outline">Get in touch ↗</a>
       </div>
-      <div class="skill-group">
-        <div class="skill-group-title">Backend</div>
-        <div class="skill-list">
-          <span class="skill-pill">Node.js</span>
-          <span class="skill-pill">Express</span>
-          <span class="skill-pill">REST APIs</span>
-          <span class="skill-pill">Prisma ORM</span>
-          <span class="skill-pill">Serverless</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">Database & Cloud</div>
-        <div class="skill-list">
-          <span class="skill-pill">PostgreSQL</span>
-          <span class="skill-pill">Supabase</span>
-          <span class="skill-pill">MongoDB</span>
-          <span class="skill-pill">Firebase</span>
-          <span class="skill-pill">Vercel</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <div class="skill-group-title">Tooling & Workflow</div>
-        <div class="skill-list">
-          <span class="skill-pill">Git / GitHub</span>
-          <span class="skill-pill">Figma</span>
-          <span class="skill-pill">Stripe</span>
-          <span class="skill-pill">Zod</span>
-          <span class="skill-pill">ESLint</span>
-          <span class="skill-pill">pnpm</span>
-        </div>
+      <div class="stat-row">
+        <div class="cell"><strong>20+</strong><span>live products</span></div>
+        <div class="cell"><strong>5+</strong><span>years building</span></div>
+        <div class="cell">Next.js · React · TypeScript · Node.js · PostgreSQL</div>
       </div>
     </div>
-  </div>
-</section>
+    <aside class="hero-side">
+      <div class="row"><span class="l">01 / CURRENT SPRINT</span><span class="v">ACTIVE</span></div>
+      <div class="row"><span class="l">02 / DEPLOYMENT</span><span class="v">SUCCESS</span></div>
+      <div class="row"><span class="l">03 / LOCATION</span><span class="v">HYD_IN</span></div>
+    </aside>
+  </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="container">
+  <!-- WORK -->
+  <section id="work" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">02. Selected Work</p><h2>Project registry</h2></div>
+    <div id="projectList"></div>
+    <button class="load-more" id="loadMore">LOAD MORE PROJECTS</button>
+  </section>
+
+  <!-- SKILLS (expertise bento) -->
+  <section id="skills" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">03. What I bring</p><h2>Expertise matrix</h2></div>
+    <div class="bento" id="bento"></div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section id="tech" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">// technical stack</p><h2>Languages, frameworks &amp; tools.</h2></div>
+    <div class="prof" id="prof"></div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">// recommendations</p><h2>What clients say about the work.</h2></div>
+    <div class="testi" id="testi"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">04. About</p><h2>The developer instance</h2></div>
     <div class="about-grid">
-      <div class="about-text">
-        <div class="section-label">About me</div>
-        <h2 class="section-title">Developer who thinks like a business owner</h2>
-        <div class="divider"></div>
-        <p>I build web products for clients who need more than just a website — they need a digital presence that works. From restaurants in Hyderabad to cab services in Australia, I've delivered end-to-end solutions that solve real problems.</p>
-        <p>My focus is on shipping clean, fast, maintainable code that scales. I work across the full stack with a strong preference for the modern JavaScript ecosystem — Next.js, TypeScript, and the Vercel platform.</p>
-        <p>When a project needs it, I handle everything: design, development, deployment, and ongoing support. I care deeply about the details that matter to users and the metrics that matter to clients.</p>
-        <div class="about-highlight">
-          <p>"I don't just build features — I build products that grow businesses."</p>
-          <span class="attr">— Syed Faiz Hussain, faizcodex</span>
-        </div>
-      </div>
-
-      <ul class="values-list" style="margin-top: 4.5rem;">
-        <li>
-          <div class="value-icon">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          </div>
-          <div>
-            <div class="value-title">Full-stack ownership</div>
-            <div class="value-desc">I handle frontend, backend, database design, and deployment — no handoff friction, full accountability.</div>
-          </div>
-        </li>
-        <li>
-          <div class="value-icon">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </div>
-          <div>
-            <div class="value-title">Fast delivery, no shortcuts</div>
-            <div class="value-desc">I move quickly without sacrificing code quality. Production-ready means tested, typed, and maintainable.</div>
-          </div>
-        </li>
-        <li>
-          <div class="value-icon">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <div>
-            <div class="value-title">Client-first communication</div>
-            <div class="value-desc">Clear timelines, honest updates, and no surprises. I treat every client's project as if it were my own.</div>
-          </div>
-        </li>
-        <li>
-          <div class="value-icon">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          </div>
-          <div>
-            <div class="value-title">Performance by default</div>
-            <div class="value-desc">Every project is optimized for Core Web Vitals, SEO, and mobile — speed is a feature, not an afterthought.</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- CERTIFICATIONS -->
-<section id="certifications" style="background: var(--cream);">
-  <div class="container">
-    <div class="section-label">Credentials</div>
-    <h2 class="section-title">Certifications</h2>
-    <p class="section-sub">Verified completions from recognized platforms and institutions.</p>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; margin-top: 3rem;">
-
-      <!-- Toppr Codr - Web Foundation -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #e8f4fd; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(0,100,200,0.15);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Toppr Codr (MIT · IIT · Kellogg backed)</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">Web Foundation — Yellow Belt</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">HTML, CSS, JavaScript & Firebase. Exceptional understanding awarded by an IIT/MIT-affiliated program.</div>
-        </div>
-      </div>
-
-      <!-- Junior Koder - Advance Coding -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #fff3e0; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(230,120,0,0.2);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e67600" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Junior Koder · Nov 2022</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">Advance Coding Course</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Progressive web app development, 3D model designing, and Arduino programming.</div>
-        </div>
-      </div>
-
-      <!-- Grasshopper - Coding Fundamentals I -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #e8f5e9; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(0,130,80,0.2);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00835a" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Grasshopper (Google) · Oct 2023</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">Coding Fundamentals</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Core programming concepts, logic, and problem-solving. Awarded by Laura Holmes, Grasshopper Founder & CEO.</div>
-        </div>
-      </div>
-
-      <!-- Grasshopper - Coding Fundamentals II -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #e8f5e9; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(0,130,80,0.2);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00835a" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Grasshopper (Google) · Oct 2023</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">Coding Fundamentals II</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Advanced fundamentals — functions, arrays, objects, and complex logic patterns. Level II completion.</div>
-        </div>
-      </div>
-
-      <!-- Sololearn - Introduction to Python -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #f3f0ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(100,60,220,0.2);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6633cc" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l2 2 4-4"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Sololearn · Feb 2024</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">Introduction to Python</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Theoretical and practical understanding of Python. Certificate CC-Y0IA9OTM issued by Yeva Hyusyan, CEO.</div>
-        </div>
-      </div>
-
-      <!-- Sololearn - Tech for Everyone -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #f3f0ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(100,60,220,0.2);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6633cc" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M9 9l2 2 4-4"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Sololearn · Jan 2024</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">Tech for Everyone</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">Comprehensive understanding of how modern technology works. Certificate CC-K7OFKFTJ, Sololearn.</div>
-        </div>
-      </div>
-
-      <!-- Great Learning - ChatGPT for Coders -->
-      <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(14,28,46,0.09)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="width: 44px; height: 44px; background: #e8f0fe; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(30,100,200,0.2);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a56cc" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.3rem;">Great Learning Academy · Verified</div>
-          <div style="font-weight: 500; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.3rem;">ChatGPT for Coders</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">AI-assisted development workflows using ChatGPT. Verified certificate from Great Learning, directed by Harish K. Subramanian.</div>
-        </div>
-      </div>
-
-      <!-- Quote card -->
-      <div style="background: var(--navy); border-radius: var(--radius); padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-        <div style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem;">Always learning</div>
-        <div style="font-family: 'Fraunces', serif; font-size: 1.05rem; color: #fff; font-style: italic; line-height: 1.55;">"Certifications validate the foundation. Client results validate the work."</div>
-        <div style="font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem;">— Syed Faiz Hussain</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="container">
-    <div class="contact-wrap">
+      <p class="eyebrow">04. About</p>
       <div>
-        <div class="section-label">Get in touch</div>
-        <h2 class="section-title">Let's build something together</h2>
-        <div class="divider"></div>
-        <p class="section-sub" style="margin-bottom: 2.5rem;">Have a project in mind? I'd love to hear about it. Whether it's a new product from scratch or improving an existing one, let's talk.</p>
+        <p class="bio">I'm a Hyderabad-based developer who thinks like a business owner. I build for real clients across food and beverage, healthcare, agriculture, and transportation — taking full-stack ownership from product thinking and interface design through deployment.</p>
+        <blockquote class="pull">"I don't just build features — I build products that grow businesses."</blockquote>
+        <div class="values">
+          <div class="v"><span class="n">01</span><p>Full-stack ownership</p></div>
+          <div class="v"><span class="n">02</span><p>Fast delivery, no shortcuts</p></div>
+          <div class="v"><span class="n">03</span><p>Client-first communication</p></div>
+          <div class="v"><span class="n">04</span><p>Performance by default</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- CREDENTIALS -->
+  <section id="credentials" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">05. Credentials</p><h2>Validated foundations</h2></div>
+    <div class="cred" id="credList"></div>
+    <p class="cred-note">Certifications validate the foundation. Client results validate the work.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">// frequently asked</p><h2>How we work together.</h2></div>
+    <div class="faq" id="faqList"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="sec wrap reveal">
+    <div class="sec-head"><p class="eyebrow">06. Let's build something</p><h2>Let's build something together.</h2></div>
+    <div class="contact-grid">
+      <div>
+        <p style="font-size:14px;line-height:1.75;color:var(--body)">Submit the form and it opens WhatsApp with your details pre-filled — confirm and send to reach me directly.</p>
         <div class="contact-info">
-          <div class="contact-item">
-            <div class="contact-item-icon">
-              <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <div>
-              <div class="contact-item-label">Email</div>
-              <div class="contact-item-value"><a href="mailto:faiz@faizcodex.com">faiz@faizcodex.com</a></div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-item-icon">
-              <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <div>
-              <div class="contact-item-label">Location</div>
-              <div class="contact-item-value">Hyderabad, India</div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-item-icon">
-              <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </div>
-            <div>
-              <div class="contact-item-label">LinkedIn</div>
-              <div class="contact-item-value"><a href="https://linkedin.com/in/faizcodex" target="_blank">linkedin.com/in/faizcodex</a></div>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-item-icon">
-              <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            </div>
-            <div>
-              <div class="contact-item-label">GitHub</div>
-              <div class="contact-item-value"><a href="https://github.com/ameersyed131-cell?tab=repositories" target="_blank">github.com/faizcodex</a></div>
-            </div>
-          </div>
+          <a href="mailto:faiz@faizcodex.com">faiz@faizcodex.com</a>
+          <a href="https://wa.me/919742588766" target="_blank" rel="noopener">WhatsApp · +91 97425 88766</a>
+          <p class="muted">Hyderabad, India</p>
+          <a href="https://linkedin.com/in/faizcodex" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://github.com/faizcodex" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
       </div>
-
-      <div>
-        <form class="contact-form" onsubmit="handleSubmit(event)">
-          <div class="form-group">
-            <label for="name">Full name</label>
-            <input type="text" id="name" placeholder="Your name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" id="email" placeholder="you@example.com" required>
-          </div>
-          <div class="form-group">
-            <label for="project">Tell me about your project</label>
-            <textarea id="project" rows="5" placeholder="What are you building? What's the scope? Any timeline in mind?"></textarea>
-          </div>
-          <button type="submit" class="btn-primary" style="align-self: flex-start; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;">
-            Send message
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-          <div id="form-success" style="display: none; background: var(--teal-pale); color: var(--teal); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.88rem; border: 1px solid rgba(26,158,128,0.2);">
-            ✓ Message sent! I'll get back to you within 24 hours.
-          </div>
-        </form>
-      </div>
+      <form class="form" id="contactForm">
+        <label class="field">name:<input type="text" id="fName" required /></label>
+        <label class="field">email:<input type="email" id="fEmail" required /></label>
+        <label class="field">project_description:<textarea id="fDesc" required></textarea></label>
+        <p class="form-err" id="formErr"></p>
+        <p class="form-msg" id="formMsg">WhatsApp opened — confirm and send your message.</p>
+        <button type="submit" class="btn btn-primary">Send via WhatsApp</button>
+      </form>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- FOOTER -->
 <footer>
-  <p>© 2025 Syed Faiz Hussain · <a href="mailto:faiz@faizcodex.com">faiz@faizcodex.com</a> · Built with precision in Hyderabad</p>
+  <div class="wrap foot-inner">
+    <p>© 2026 Syed Faiz Hussain · faiz@faizcodex.com · Built with precision in Hyderabad</p>
+    <a href="#top" class="up">&lt;FaizCodex /&gt;</a>
+  </div>
 </footer>
 
+<!-- MODAL -->
+<div id="modal"><button class="close" id="modalClose">&times;</button><img id="modalImg" alt="Certificate" /></div>
+
 <script>
-function handleSubmit(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('form-success').style.display = 'block';
-    btn.style.display = 'none';
-    e.target.reset();
-  }, 900);
-}
+const WHATSAPP = "919742588766";
+const IMG = "https://media.base44.com/images/public/6a6a3aa6ad85db550062ede5/";
 
-// Scroll-triggered fade-in
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
+const projects = [
+  {name:"Farmaish",cat:"Brand & Marketing · Food & Beverage",desc:"A brand-led website for a premium Dum Biryani restaurant in Hyderabad, bringing its story, menu, and locations into one focused digital experience.",stack:["Next.js","React","Tailwind"],url:""},
+  {name:"Farmaish Order",cat:"Food Tech · E-commerce",desc:"A complete online ordering system with cart flows, item customisations, delivery-zone logic, and integrated payments.",stack:["Next.js","TypeScript","Stripe","PostgreSQL"],url:""},
+  {name:"Farmaish POS",cat:"SaaS · Restaurant Tech",desc:"A custom point-of-sale system connecting order management, billing, kitchen display workflows, and real-time operational analytics.",stack:["React","Node.js","PostgreSQL","Prisma"],url:""},
+  {name:"AGN Foundation",cat:"Non-Profit",desc:"A credibility-first foundation website structured to communicate impact clearly and strengthen donor trust and engagement.",stack:["Next.js","Tailwind","Vercel"],url:""},
+  {name:"Coorg Coffee Bean Farm",cat:"Agriculture · E-commerce",desc:"A direct-to-consumer storefront for a specialty coffee estate, combining product education, farm storytelling, and ordering.",stack:["React","E-commerce","Responsive UI"],url:""},
+  {name:"Real Cabs",cat:"Premium Chauffeur · Australia",desc:"A conversion-focused booking and brand site for a premium chauffeur service, designed around clear routes to enquiry.",stack:["Next.js","Booking UX","Tailwind"],url:""},
+  {name:"Dr. Kouser Fatima",cat:"Healthcare",desc:"A professional practice website for a gynaecologist, designed to establish patient trust and simplify appointment enquiries.",stack:["React","Healthcare UX","Vercel"],url:""},
+  {name:"SteelCraft Industries",cat:"Industrial · B2B",desc:"A corporate catalogue website for a commercial kitchen equipment manufacturer, with structured products and B2B enquiry flows.",stack:["Next.js","Product Catalogue","Forms"],url:""},
+  {name:"Cake La More",cat:"Bakery · E-commerce",desc:"A product-focused bakery storefront that presents celebration cakes clearly and guides customers from browsing to ordering.",stack:["React","E-commerce","Responsive UI"],url:"https://cakelamore.vercel.app"},
+  {name:"Tahaan Foods",cat:"Food & Beverage",desc:"A clean food-brand website built to present the product range, brand story, and customer touchpoints in one place.",stack:["React","Brand Site","Vercel"],url:"https://tahaanfoods.com"},
+  {name:"Seerah",cat:"Content · Educational",desc:"A focused educational reading experience that organises Seerah content for clear, accessible exploration across devices.",stack:["Next.js","Content UX","Responsive UI"],url:"https://seerah.one"},
+  {name:"The Husna Global",cat:"Business · Consultancy",desc:"A professional consultancy presence built to clarify services, establish credibility, and create a direct path to enquiry.",stack:["React","Business Site","Forms"],url:"https://thehusnaglobal.com"},
+  {name:"Basavakalyan Empire",cat:"Heritage Restaurant · Karnataka & Hyderabad",desc:"A five-page restaurant site with interactive footer details, WhatsApp reservations, and a press-citations guest book.",stack:["React","WhatsApp","Multi-page"],url:"https://basvakalyanempire1.vercel.app"},
+  {name:"BigStar Café",cat:"Café · Hospitality · Hyderabad",desc:"A multi-page café website shaped by a modern industrial coffee-house aesthetic and a fully responsive grid system.",stack:["React","Responsive Grid","Vercel"],url:"https://bigstar-cafe.vercel.app"},
+  {name:"Exim Group",cat:"Import · Export · B2B",desc:"A structured B2B website that presents international trade capabilities and directs prospective partners toward enquiry.",stack:["React","B2B UX","Forms"],url:"https://eximgroup.vercel.app"},
+  {name:"SP Compliance India Ltd",cat:"Business Compliance Consultancy",desc:"A static multi-page website for a compliance consultancy, organising complex services into a clear business-facing structure.",stack:["React","Multi-page","Responsive UI"],url:"https://sp-compliance.vercel.app"}
+];
 
-document.querySelectorAll('.project-card, .skill-group, .values-list li, .stat-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  observer.observe(el);
+const expertise = [
+  {id:"0x01",label:"FRONTEND",focus:"Viewport",tools:["Next.js","React","TypeScript","Tailwind CSS","Framer Motion","HTML5 / CSS3"]},
+  {id:"0x02",label:"BACKEND",focus:"Logic",tools:["Node.js","Express","REST APIs","Prisma ORM","Serverless"]},
+  {id:"0x03",label:"DATA + CLOUD",focus:"Persistence",tools:["PostgreSQL","Supabase","MongoDB","Firebase","Vercel"]},
+  {id:"0x04",label:"TOOLING",focus:"Efficiency",tools:["Git / GitHub","Figma","Stripe","Zod","ESLint","pnpm"]}
+];
+
+const profGroups = [
+  {label:"0x01 · LANGUAGES",items:[["JavaScript",95],["TypeScript",90],["Python",75],["HTML5",95],["CSS3",92]]},
+  {label:"0x02 · FRAMEWORKS",items:[["React",95],["Next.js",92],["Node.js",88],["Express",85]]},
+  {label:"0x03 · STYLING + MOTION",items:[["Tailwind CSS",95],["Framer Motion",80]]},
+  {label:"0x04 · DATA + CLOUD",items:[["PostgreSQL",85],["Supabase",88],["MongoDB",80],["Firebase",85],["Prisma",88],["Vercel",92]]},
+  {label:"0x05 · TOOLING",items:[["Git / GitHub",92],["Figma",80],["Stripe",85],["Zod",82],["pnpm",90],["ESLint",88]]}
+];
+
+const testimonials = [
+  {quote:"Faiz delivered our restaurant site and ordering platform on time and beyond what we imagined. The whole experience was smooth.",name:"Client",role:"Founder",project:"Farmaish"},
+  {quote:"He took full ownership from design to deployment. Rare to find a developer who thinks about the business side too.",name:"Client",role:"Operations Lead",project:"Real Cabs"},
+  {quote:"The site loads fast, looks sharp, and brings us enquiries every week. Exactly what we needed.",name:"Client",role:"Director",project:"SteelCraft Industries"}
+];
+
+const certs = [
+  {issuer:"Junior Koder",name:"Advance Coding Course",desc:"Progressive web app development, 3D model designing, and Arduino programming.",date:"18 Nov 2022",img:"174a86144_WhatsAppImage2026-05-02at124058PM2.jpg"},
+  {issuer:"Grasshopper (Google)",name:"Coding Fundamentals",desc:"Foundational programming concepts through practical JavaScript exercises.",date:"03 Oct 2023",img:"4b2aae321_WhatsAppImage2026-05-02at124058PM.jpg"},
+  {issuer:"Grasshopper (Google)",name:"Coding Fundamental - II",desc:"Functions, arrays, objects, and structured logic.",date:"03 Oct 2023",img:"2729ac4e1_WhatsAppImage2026-05-02at125648PM.jpg"},
+  {issuer:"Sololearn",name:"Tech for Everyone",desc:"A broad foundation in modern technology and digital systems.",date:"29 Jan 2024",img:"ac5b52df4_WhatsAppImage2026-05-02at124059PM.jpg"},
+  {issuer:"Sololearn",name:"Introduction to Python",desc:"Python syntax, control flow, and data structures.",date:"02 Feb 2024",img:"09282c6b4_WhatsAppImage2026-05-02at124059PM1.jpeg"},
+  {issuer:"Toppr Codr",name:"Web Foundation Course — Yellow Belt",desc:"HTML, CSS, JavaScript, and Firebase web foundations.",date:"2023",img:"f6129f122_WhatsAppImage2026-05-02at124058PM1.jpeg"},
+  {issuer:"Great Learning",name:"ChatGPT for Coders",desc:"Practical use of AI-assisted workflows in software development.",date:"2024",img:"ade31aeb3_WhatsAppImage2026-05-02at124608PM.jpg"}
+];
+
+const faqs = [
+  ["What does your typical project timeline look like?","Most marketing sites ship in 2–3 weeks. Full-stack platforms like ordering, POS, or dashboards usually run 4–8 weeks depending on scope. I share a week-by-week plan before we start."],
+  ["How do you charge for a project?","I work on fixed-scope project pricing after a discovery call, so you know the cost upfront before any work begins. For ongoing work I offer monthly retainers."],
+  ["Do you work with early-stage startups?","Yes. I have built MVPs and launch products for food & beverage, healthcare, and agriculture businesses, and I can shape the scope to fit an early-stage budget."],
+  ["What technologies do you use?","Next.js, React, TypeScript, Node.js, PostgreSQL, Prisma, Supabase, and Tailwind — deployed on Vercel. I choose the stack based on what the product needs."],
+  ["Do you offer maintenance after launch?","Yes. I offer optional monthly maintenance covering updates, monitoring, and small feature work, so the product keeps running cleanly after handover."],
+  ["How do we communicate during a project?","Over WhatsApp and email for day-to-day updates, with shared milestone tracking. You always know what is being worked on and what comes next."],
+  ["Do you work remotely?","I am based in Hyderabad and work with clients across India and abroad. The entire process is designed to run smoothly remotely."]
+];
+
+// RENDER PROJECTS
+const pl = document.getElementById("projectList");
+projects.forEach((p,i)=>{
+  const a = document.createElement("article");
+  a.className = "proj" + (i>=6?" hidden-proj":"");
+  a.innerHTML = `
+    <div class="idx">${String(i+1).padStart(2,"0")}</div>
+    <div><p class="cat">${p.cat}</p><h3>${p.name}</h3></div>
+    <div><p class="desc">${p.desc}</p><div class="chips">${p.stack.map(t=>`<span class="chip">${t}</span>`).join("")}</div></div>
+    <div class="link">${p.url?`<a class="live" href="${p.url}" target="_blank" rel="noopener">LIVE ↗</a>`:`<span class="private">PRIVATE DEPLOYMENT</span>`}</div>`;
+  pl.appendChild(a);
 });
+let expanded=false;
+document.getElementById("loadMore").addEventListener("click",()=>{
+  document.querySelectorAll(".hidden-proj").forEach(e=>e.style.display="grid");
+  document.getElementById("loadMore").textContent="COLLAPSE REGISTRY";
+  if(expanded){document.querySelectorAll(".hidden-proj").forEach(e=>e.style.display="none");document.getElementById("loadMore").textContent=`LOAD ${projects.length-6} MORE PROJECTS`;}
+  expanded=!expanded;
+});
+
+// RENDER EXPERTISE
+const be = document.getElementById("bento");
+expertise.forEach((g,i)=>{
+  const c=document.createElement("article");c.className="card";
+  c.innerHTML=`<div class="card-top"><span>${g.label}</span><span>${g.id}</span></div><p class="card-focus">${g.focus}</p><div class="card-tools">${g.tools.map(t=>`<span>${t}</span>`).join("")}</div>`;
+  be.appendChild(c);
+});
+
+// RENDER PROFICIENCY
+const pr = document.getElementById("prof");
+profGroups.forEach(g=>{
+  const c=document.createElement("article");c.className="card";
+  c.innerHTML=`<p class="grp-label">${g.label}</p>${g.items.map(([n,p])=>`<div class="bar-row"><div class="lbl"><span class="n">${n}</span><span class="p">${p}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div></div>`).join("")}`;
+  pr.appendChild(c);
+});
+
+// RENDER TESTIMONIALS
+const te = document.getElementById("testi");
+testimonials.forEach(t=>{
+  const c=document.createElement("article");c.className="card";
+  c.innerHTML=`<p class="q">&ldquo;${t.quote}&rdquo;</p><div class="who"><p class="n">${t.name}</p><p class="r">${t.role} · ${t.project}</p></div>`;
+  te.appendChild(c);
+});
+
+// RENDER CREDENTIALS
+const cl = document.getElementById("credList");
+certs.forEach(c=>{
+  const r=document.createElement("div");r.className="row";
+  r.innerHTML=`<p class="issuer">${c.issuer}</p><h3>${c.name}</h3><p class="d">${c.desc}</p><div class="meta"><span class="date">${c.date}</span><button class="view" data-img="${IMG}${c.img}">[VIEW]</button></div>`;
+  cl.appendChild(r);
+});
+
+// RENDER FAQ
+const fl = document.getElementById("faqList");
+faqs.forEach(([q,a],i)=>{
+  const it=document.createElement("div");it.className="item"+(i===0?" open":"");
+  it.innerHTML=`<button class="q"><span style="display:flex;gap:16px;align-items:flex-start"><span class="qn">${String(i+1).padStart(2,"0")}</span><span class="qt">${q}</span></span><span class="ic">${i===0?"−":"+"}</span></button><p class="a">${a}</p>`;
+  it.querySelector(".q").addEventListener("click",()=>{
+    const op=it.classList.toggle("open");
+    it.querySelector(".ic").textContent=op?"−":"+";
+  });
+  fl.appendChild(it);
+});
+
+// MODAL
+const modal=document.getElementById("modal"),modalImg=document.getElementById("modalImg");
+document.addEventListener("click",e=>{if(e.target.matches(".view")){modalImg.src=e.target.dataset.img;modal.classList.add("open");}});
+document.getElementById("modalClose").addEventListener("click",()=>modal.classList.remove("open"));
+modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("open");});
+
+// MOBILE MENU
+const mm=document.getElementById("mobileMenu");
+document.getElementById("menuBtn").addEventListener("click",()=>{mm.classList.toggle("open");document.getElementById("menuBtn").textContent=mm.classList.contains("open")?"CLOSE ✕":"MENU";});
+mm.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{mm.classList.remove("open");document.getElementById("menuBtn").textContent="MENU";}));
+
+// CONTACT FORM -> WHATSAPP
+document.getElementById("contactForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const n=document.getElementById("fName").value.trim(),em=document.getElementById("fEmail").value.trim(),d=document.getElementById("fDesc").value.trim();
+  const err=document.getElementById("formErr"),msg=document.getElementById("formMsg");
+  if(!n||!em||!d){err.style.display="block";msg.style.display="none";return;}
+  err.style.display="none";
+  const text=`New project enquiry\n\nName: ${n}\nEmail: ${em}\n\nProject:\n${d}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`,"_blank");
+  msg.style.display="block";
+  document.getElementById("contactForm").reset();
+});
+
+// REVEAL ON SCROLL
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
+// LOADER
+const lines=["> initializing faizcodex...","> mounting modules · next.js · ts · node","> establishing connection · hyd_in","> loading project registry...","> ready."];
+const lb=document.getElementById("loaderBox");let li=0;
+function tick(){
+  if(li<lines.length){const p=document.createElement("p");p.textContent=lines[li];lb.appendChild(p);li++;setTimeout(tick,300);}
+  else{const c=document.createElement("p");c.className="cur";c.innerHTML="<span>█</span>";lb.appendChild(c);setTimeout(()=>document.getElementById("loader").classList.add("hide"),450);}
+}
+tick();
 </script>
 </body>
 </html>
